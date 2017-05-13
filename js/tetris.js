@@ -43,7 +43,7 @@ function newShape() {
     }
     // position where the shape will evolve
     currentX = 6 - Math.floor(shape[ 0 ] / 2);
-    currentY = 0;
+    currentY = ROWS - 1;
 }
 
 // clears the board
@@ -58,8 +58,8 @@ function init() {
 
 // keep the element moving down, creating new shapes and clearing lines
 function tick() {
-    if ( valid( 0, 1 ) ) {
-        ++currentY;
+    if ( valid( 0, -1 ) ) {
+        --currentY;
     }
     // if the element settled
     else {
@@ -118,9 +118,9 @@ function keyPress( key ) {
                 ++currentX;
             }
             break;
-        case 'down':
-            if ( valid( 0, 1 ) ) {
-                ++currentY;
+        case 'up':
+            if ( valid( 0, -1 ) ) {
+                --currentY;
             }
             break;
     }
@@ -142,8 +142,9 @@ function valid( offsetX, offsetY, newCurrent ) {
               || board[ y + offsetY ][ x + offsetX ]
               || x + offsetX < 0
               || y + offsetY >= ROWS
+              || y + offsetY < 0
               || x + offsetX >= COLS ) {
-                if (offsetY == 1) lose = true; // lose if the current shape at the top row when checked
+                if (offsetY >= 18) lose = true; // lose if the current shape at the top row when checked
                 return false;
             }
         }
@@ -157,6 +158,16 @@ function newGame() {
     newShape();
     lose = false;
     interval = setInterval( tick, 250 );
+}
+
+// Gaussian pseudo-random with Box-Muller transform.
+function rand_gaussian() {
+    var u = 1 - Math.random(); // Subtraction to flip [0, 1) to (0, 1].
+    var v = 1 - Math.random();
+    var gauss = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v ) * 0.5 + 0.5;
+    gauss = gauss < 0? 0:
+            gauss > 1? 1: gauss;
+    return gauss;
 }
 
 newGame();

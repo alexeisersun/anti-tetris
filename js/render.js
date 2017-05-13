@@ -25,12 +25,11 @@ function render() {
 
     ctx.fillStyle = 'red';
     ctx.strokeStyle = 'black';
-    for ( var y = 0; y < 4; ++y ) {
-        for ( var x = 0; x < 4; ++x ) {
-            if ( current[ y ][ x ] ) {
-                ctx.fillStyle = colors[ current[ y ][ x ] - 1 ];
-                drawBlock( currentX + x, currentY + y );
-            }
+    y = 0;
+    for ( var x = 0; x < 12; ++x ) {
+        if ( current[ y ][ x ] ) {
+            ctx.fillStyle = colors[ current[ y ][ x ] - 1 ];
+            drawBlock( currentX + x, currentY + y );
         }
     }
 }

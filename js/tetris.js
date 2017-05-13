@@ -1,4 +1,6 @@
 var COLS = 12, ROWS = 20;
+var score = 0;
+var currentScore = 0;
 var board = [];
 var lose;
 var interval;
@@ -28,7 +30,7 @@ var colors = [
 function newShape() {
     var id = Math.floor( Math.random() * shapes.length );
     var shape = shapes[ id ]; // maintain id for color filling
-
+    currentScore = shape[0];
     current = [];
     let y = 0;
     current[ y ] = [];
@@ -64,9 +66,10 @@ function tick() {
     // if the element settled
     else {
         freeze();
-        //clearLines();
+        score += currentScore;
+        updateScore();
         if (lose) {
-            newGame();
+        //    newGame();
             return false;
         }
         newShape();
@@ -160,14 +163,8 @@ function newGame() {
     interval = setInterval( tick, 250 );
 }
 
-// Gaussian pseudo-random with Box-Muller transform.
-function rand_gaussian() {
-    var u = 1 - Math.random(); // Subtraction to flip [0, 1) to (0, 1].
-    var v = 1 - Math.random();
-    var gauss = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v ) * 0.5 + 0.5;
-    gauss = gauss < 0? 0:
-            gauss > 1? 1: gauss;
-    return gauss;
+function updateScore() {
+    scoreLabel.innerHTML = 'Score: ' + score;
 }
 
 newGame();

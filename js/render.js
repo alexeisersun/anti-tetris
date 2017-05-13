@@ -13,6 +13,16 @@ function drawBlock( x, y ) {
 function render() {
     ctx.clearRect( 0, 0, W, H );
 
+    ctx.fillStyle = 'red';
+    ctx.strokeStyle = 'black';
+    y = 0;
+    for ( var x = 0; x < 12; ++x ) {
+        if ( current[ y ][ x ] ) {
+            ctx.fillStyle = colors[ current[ y ][ x ] - 1 ];
+            drawBlock( currentX + x, currentY + y );
+        }
+    }
+
     ctx.strokeStyle = 'black';
     for ( var x = 0; x < COLS; ++x ) {
         for ( var y = 0; y < ROWS; ++y ) {
@@ -23,15 +33,8 @@ function render() {
         }
     }
 
-    ctx.fillStyle = 'red';
-    ctx.strokeStyle = 'black';
-    y = 0;
-    for ( var x = 0; x < 12; ++x ) {
-        if ( current[ y ][ x ] ) {
-            ctx.fillStyle = colors[ current[ y ][ x ] - 1 ];
-            drawBlock( currentX + x, currentY + y );
-        }
-    }
+    
+
 }
 
 setInterval( render, 30 );

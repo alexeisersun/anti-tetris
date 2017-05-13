@@ -21,10 +21,10 @@ var colors = [
     'yellow',
     'red',
     'green',
+    'brown'
     ];
 
-// creates a new 4x4 shape in global variable 'current'
-// 4x4 so as to cover the size when the shape is rotated
+// creates a new 12x1 shape in global variable 'current'
 function newShape() {
     var id = Math.floor( Math.random() * shapes.length );
     var shape = shapes[ id ]; // maintain id for color filling
@@ -64,7 +64,7 @@ function tick() {
     // if the element settled
     else {
         freeze();
-        clearLines();
+        //clearLines();
         if (lose) {
             newGame();
             return false;

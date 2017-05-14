@@ -22,62 +22,45 @@ var newGame = true;
 var clickedPlay = true;
 var clickedStop = false;
 var intervalId;
-var playPauseButton = document.getElementById('play-button');
-var stopReplayButton = document.getElementById('stop-button');
+var playButton = document.getElementById('play-button');
+var stopButton = document.getElementById('stop-button');
+var pauseButton = document.getElementById('pause-button');
+var repeatButton = document.getElementById('repeat-button');
 
-function playGame() {
-    if ( newGame ) {
-        tetris.newGame();
-    } else {
-        tetris.playGame();
+
+playButton.addEventListener("click", play);
+stopButton.addEventListener("click", stop);
+pauseButton.addEventListener("click", pause);
+repeatButton.addEventListener("click", repeat);
+
+function enableButtons(buttonList) {
+    for (var i = 0; i < buttonList.length; ++i) {
+        buttonList[i].classList.remove("disabled");
+        buttonList[i].classList.add("active");
     }
-
-    intervalId = setInterval( render, 30 );
-    clickedPlay = false;
-    stopReplayButton.classList.remove("disabled");
-    stopReplayButton.classList.add("active");
-    playPauseButton.innerHTML = '<span class="glyphicon glyphicon-pause"></span>';
-    stopReplayButton.innerHTML = '<span class="glyphicon glyphicon-stop"></span>';
 }
 
-function pauseGame() {
-    clearInterval( intervalId );
-    clickedPlay = true;
-    tetris.pauseGame();
-    playPauseButton.innerHTML = '<span class="glyphicon glyphicon-play"></span>';
-    stopReplayButton.innerHTML = '<span class="glyphicon glyphicon-repeat"></span>';
+function disableButtons(buttonList) {
+    for (var i = 0; i < buttonList.length; ++i) {
+        buttonList[i].classList.remove("active");
+        buttonList[i].classList.add("disabled");
+    }
 }
-
-function stopGame(){
-    clickedPlay = true;
-    clickedStop = false;
-    tetris.endGame();
-    stopReplayButton.classList.remove("active");
-    stopReplayButton.classList.add("disabled");
-    playPauseButton.innerHTML = '<span class="glyphicon glyphicon-play"></span>';
-    stopReplayButton.innerHTML = '<span class="glyphicon glyphicon-repeat"></span>';
-}
-
-function replayGame() {
-    playGame();
-}
-
-
-playPauseButton.addEventListener("click", play);
-stopReplayButton.addEventListener("click", stop);
-
 function play() {
-    if (clickedPlay) {
-        playGame();
-    } else {
-        pauseGame();
-    }
+    enableButtons([pauseButton, stopButton, repeatButton]);
+    disableButtons([playButton]);
 }
 
-function stop() {
-    if (clickedStop) {
-        stopGame();
-    } else {
-        replayGame();
-    }
+function pause() {
+    disableButtons([pauseButton]);
+    enableButtons([playButton, stopButton, repeatButton]);
+}
+
+function stop(){
+    enableButtons([playButton]);
+    disableButtons([pauseButton, stopButton, repeatButton]);
+}
+
+function repeat() {
+    playButton();
 }

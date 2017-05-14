@@ -140,6 +140,7 @@ var tetris = {
 
     newGame: function() {
         this.paused = false;
+        this.lastRow = 0;
         this.playing = true;
         this.stopped = false;
         clearInterval(this.interval);

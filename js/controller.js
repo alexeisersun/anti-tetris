@@ -87,3 +87,8 @@ function repeat() {
     }
     tetris.replayGame();
 }
+
+
+var audio = new Audio('sound/tetris-ost.ogg');
+audio.loop = true;
+audio.play();

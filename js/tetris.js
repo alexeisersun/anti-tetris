@@ -10,6 +10,7 @@ var tetris = {
     paused: false,
     playing: false,
     interval: 250,
+    lastRow: 0,
     gameOverEvent: null,
     currentShape: {shape: null, x: 0, y: 0, width: 0, points: 0, colorId: 0},
     shapes: [
@@ -65,6 +66,8 @@ var tetris = {
                 this.board[ this.currentShape.y ][ x + this.currentShape.x ] = this.currentShape.shape[ x ];
             }
         }
+        this.lastRow = this.currentShape.y > this.lastRow ? this.currentShape.y : this.lastRow;
+        this.isGameOver();
     },
 
     onKeyPress: function( key ) {
@@ -103,9 +106,6 @@ var tetris = {
                   || offsetY >= this.rows
                   || offsetY < 0
                   || x + offsetX >= this.cols ) {
-                    if (offsetY >= 18) { // lose if the currentShape shape at the top row when checked
-                        this.lose = true;
-                    }
                     return false;
                 }
             }
@@ -113,20 +113,28 @@ var tetris = {
         return true;
     },
 
+    isGameOver: function(){
+        if ( this.lastRow == this.rows - 1) {
+            this.lose = true;
+        }
+    },
+
     tick: function () {
         if ( tetris.playing && !(tetris.stopped || tetris.paused) )
-        if ( tetris.canMove( 0, -1 )) {
-            --tetris.currentShape.y;
-        }
-        else {
-            tetris.freezeShape();
-            tetris.score += tetris.currentShape.points;
-            updateScore();
-            if (tetris.lose) {
-                tetris.endGame();
-                return false;
+        {
+            if ( tetris.canMove( 0, -1 )) {
+                --tetris.currentShape.y;
             }
-            tetris.createNewShape();
+            else {
+                tetris.freezeShape();
+                tetris.score += tetris.currentShape.points;
+                updateScore();
+                if (tetris.lose) {
+                    tetris.endGame();
+                    return false;
+                }
+                tetris.createNewShape();
+            }
         }
     },
 

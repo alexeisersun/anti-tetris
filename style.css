@@ -23,6 +23,7 @@ canvas {
 	font-weight: normal;
 }
 
-.score {
-
+#game-over-screen {
+	visibility: hidden;
+	float: left;
 }

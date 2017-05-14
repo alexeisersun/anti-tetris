@@ -1,3 +1,5 @@
+// Create the event
+
 var tetris = {
     cols: 12,
     rows: 20,
@@ -5,7 +7,10 @@ var tetris = {
     currentScore: 0,
     board: [],
     lose: true,
+    paused: false,
+    playing: false,
     interval: 250,
+    gameOverEvent: null,
     currentShape: {shape: null, x: 0, y: 0, width: 0, points: 0, colorId: 0},
     shapes: [
         { width: 1, points: 1, colorId: 0, shape: [1]},
@@ -25,14 +30,6 @@ var tetris = {
         'green',
         'brown'
     ],
-
-    newGame: function() {
-        clearInterval(this.interval);
-        this.clearBoard();
-        this.createNewShape();
-        this.lose = false;
-        this.interval = setInterval( this.tick, 250 );
-    },
 
     createNewShape: function() {
         var id = Math.floor( Math.random() * this.shapes.length );
@@ -59,22 +56,6 @@ var tetris = {
             for ( var x = 0; x < this.cols; ++x ) {
                 this.board[ y ][ x ] = 0;
             }
-        }
-    },
-
-    tick: function () {
-        if ( tetris.canMove( 0, -1 )) {
-            --tetris.currentShape.y;
-        }
-        else {
-            tetris.freezeShape();
-            tetris.score += tetris.currentShape.points;
-            updateScore();
-            if (tetris.lose) {
-                tetris.endGame();
-                return false;
-            }
-            tetris.createNewShape();
         }
     },
 
@@ -105,7 +86,7 @@ var tetris = {
             break;
         }
     },
-    
+
     canMove: function( offsetX, offsetY, newCurrentShape ) {
         offsetX = offsetX || 0;
         offsetY = offsetY || 0;
@@ -132,16 +113,60 @@ var tetris = {
         return true;
     },
 
-    endGame: function() {
+    tick: function () {
+        if ( tetris.playing && !(tetris.stopped || tetris.paused) )
+        if ( tetris.canMove( 0, -1 )) {
+            --tetris.currentShape.y;
+        }
+        else {
+            tetris.freezeShape();
+            tetris.score += tetris.currentShape.points;
+            updateScore();
+            if (tetris.lose) {
+                tetris.endGame();
+                return false;
+            }
+            tetris.createNewShape();
+        }
+    },
+
+    newGame: function() {
+        this.paused = false;
+        this.playing = true;
+        this.stopped = false;
         clearInterval(this.interval);
-        alert("Lost!");
+        this.score = 0;
+        updateScore();
+        this.clearBoard();
+        this.createNewShape();
+        this.lose = false;
+        this.interval = setInterval( this.tick, 250 );
+    },
+
+    endGame: function() {
+        this.gameOverEvent = new CustomEvent("gameOver", { detail: "Game Over!", score: 0});
+        document.dispatchEvent(tetris.gameOverEvent);
+        clearInterval( this.interval )
+
     },
 
     pauseGame: function() {
-        clearInterval(this.interval);
+        this.paused = true;
     },
 
     playGame: function() {
-        this.interval( this.tick, 250 );
+        this.paused = false;
+        if ( this.stopped ) {
+            this.newGame();
+        }
+    },
+
+    stopGame: function() {
+        this.stopped = true;
+    },
+
+    replayGame: function() {
+        this.newGame();
     }
 }
+

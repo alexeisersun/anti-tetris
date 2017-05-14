@@ -1,9 +1,30 @@
+var playButton, stopButton, pauseButton, repeatButton;
+var renderId;
+var gameOverScreen = document.getElementById("game-over-screen");
+
+playButton = document.getElementById('play-button');
+stopButton = document.getElementById('stop-button');
+pauseButton = document.getElementById('pause-button');
+repeatButton = document.getElementById('repeat-button');
+
+playButton.addEventListener("click", play);
+stopButton.addEventListener("click", stop);
+pauseButton.addEventListener("click", pause);
+repeatButton.addEventListener("click", repeat);
+
 window.addEventListener("keydown", function(e) {
     // space and arrow keys
     if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
         e.preventDefault();
     }
 }, false);
+
+// Add an event listener
+document.addEventListener("gameOver", function(e) {
+    gameOverScreen.style.visibility = "visible" ;
+    disableButtons([playButton, pauseButton, stopButton]);
+    enableButtons([repeatButton]);
+});
 
 document.body.onkeydown = function( e ) {
     var keys = {
@@ -13,25 +34,13 @@ document.body.onkeydown = function( e ) {
     };
 
     if ( typeof keys[ e.keyCode ] != 'undefined' ) {
-        tetris.onKeyPress( keys[ e.keyCode ] );
-        render();
+        if ( tetris.playing ) {
+            tetris.onKeyPress( keys[ e.keyCode ] );
+            render();
+        }
     }
 };
 
-var newGame = true;
-var clickedPlay = true;
-var clickedStop = false;
-var intervalId;
-var playButton = document.getElementById('play-button');
-var stopButton = document.getElementById('stop-button');
-var pauseButton = document.getElementById('pause-button');
-var repeatButton = document.getElementById('repeat-button');
-
-
-playButton.addEventListener("click", play);
-stopButton.addEventListener("click", stop);
-pauseButton.addEventListener("click", pause);
-repeatButton.addEventListener("click", repeat);
 
 function enableButtons(buttonList) {
     for (var i = 0; i < buttonList.length; ++i) {
@@ -46,21 +55,35 @@ function disableButtons(buttonList) {
         buttonList[i].classList.add("disabled");
     }
 }
+
 function play() {
     enableButtons([pauseButton, stopButton, repeatButton]);
     disableButtons([playButton]);
+    renderId = setInterval( render, 30 );
+    if ( tetris.playing ) {
+        tetris.playGame();
+    } else {
+        tetris.newGame();
+    }
 }
 
 function pause() {
     disableButtons([pauseButton]);
     enableButtons([playButton, stopButton, repeatButton]);
+    tetris.pauseGame();
 }
 
 function stop(){
     enableButtons([playButton]);
     disableButtons([pauseButton, stopButton, repeatButton]);
+    tetris.stopGame();
 }
 
 function repeat() {
-    playButton();
+    enableButtons([pauseButton, stopButton, repeatButton]);
+    disableButtons([playButton]);
+    if ( tetris.lose ) {
+        gameOverScreen.style.visibility = 'hidden';
+    }
+    tetris.replayGame();
 }

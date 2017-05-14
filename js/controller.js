@@ -6,7 +6,7 @@ document.body.onkeydown = function( e ) {
     };
 
     if ( typeof keys[ e.keyCode ] != 'undefined' ) {
-        keyPress( keys[ e.keyCode ] );
+        tetris.onKeyPress( keys[ e.keyCode ] );
         render();
     }
 };

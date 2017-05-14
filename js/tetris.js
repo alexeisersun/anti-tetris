@@ -1,6 +1,6 @@
 var tetris = {
-    COLS: 12,
-    ROWS: 20,
+    cols: 12,
+    rows: 20,
     score: 0,
     currentScore: 0,
     board: [],
@@ -37,7 +37,7 @@ var tetris = {
     createNewShape: function() {
         var id = Math.floor( Math.random() * this.shapes.length );
         var shape = this.shapes[ id ];
-        for ( var x = 0; x < this.COLS; ++x ) {
+        for ( var x = 0; x < this.cols; ++x ) {
             if ( typeof shape.shape[ x ] != 'undefined' && shape.shape[ x ] ) {
                 shape.shape[ x ] = id + 1;
             }
@@ -50,13 +50,13 @@ var tetris = {
         this.currentShape.width = shape.width;
         this.currentShape.colorId = shape.colorId;
         this.currentShape.x = 6 - Math.floor(shape.width / 2);
-        this.currentShape.y = this.ROWS - 1;
+        this.currentShape.y = this.rows - 1;
     },
 
     clearBoard: function() {
-        for ( var y = 0; y < this.ROWS; ++y ) {
+        for ( var y = 0; y < this.rows; ++y ) {
             this.board[ y ] = [];
-            for ( var x = 0; x < this.COLS; ++x ) {
+            for ( var x = 0; x < this.cols; ++x ) {
                 this.board[ y ][ x ] = 0;
             }
         }
@@ -71,7 +71,7 @@ var tetris = {
             tetris.score += tetris.currentShape.points;
             updateScore();
             if (tetris.lose) {
-                alert("LOST");
+                tetris.endGame();
                 return false;
             }
             tetris.createNewShape();
@@ -79,7 +79,7 @@ var tetris = {
     },
 
     freezeShape: function () {
-        for ( var x = 0; x < this.COLS; ++x ) {
+        for ( var x = 0; x < this.cols; ++x ) {
             if ( this.currentShape.shape[ x ] ) {
                 this.board[ this.currentShape.y ][ x + this.currentShape.x ] = this.currentShape.shape[ x ];
             }
@@ -113,15 +113,15 @@ var tetris = {
         offsetY = this.currentShape.y + offsetY;
         newCurrentShape = newCurrentShape || this.currentShape;
 
-        for ( var x = 0; x < this.COLS; ++x ) {
+        for ( var x = 0; x < this.cols; ++x ) {
             if ( newCurrentShape.shape[ x ] ) {
                 if ( typeof this.board[ offsetY ] == 'undefined'
                   || typeof this.board[ offsetY ][ x + offsetX ] == 'undefined'
                   || this.board[ offsetY ][ x + offsetX ]
                   || x + offsetX < 0
-                  || offsetY >= this.ROWS
+                  || offsetY >= this.rows
                   || offsetY < 0
-                  || x + offsetX >= this.COLS ) {
+                  || x + offsetX >= this.cols ) {
                     if (offsetY >= 18) { // lose if the currentShape shape at the top row when checked
                         this.lose = true;
                     }
@@ -130,6 +130,11 @@ var tetris = {
             }
         }
         return true;
+    },
+
+    endGame: function() {
+        clearInterval(this.interval);
+        alert("LOST");
     }
 }
 
@@ -138,9 +143,9 @@ tetris.newGame();
 /*
     // check if any lines are filled and clear them
     function clearLines() {
-        for ( var y = ROWS - 1; y >= 0; --y ) {
+        for ( var y = rows - 1; y >= 0; --y ) {
             var rowFilled = true;
-            for ( var x = 0; x < COLS; ++x ) {
+            for ( var x = 0; x < cols; ++x ) {
                 if ( board[ y ][ x ] == 0 ) {
                     rowFilled = false;
                     break;
@@ -149,7 +154,7 @@ tetris.newGame();
             if ( rowFilled ) {
                 document.getElementById( 'clearsound' ).play();
                 for ( var yy = y; yy > 0; --yy ) {
-                    for ( var x = 0; x < COLS; ++x ) {
+                    for ( var x = 0; x < cols; ++x ) {
                         board[ yy ][ x ] = board[ yy - 1 ][ x ];
                     }
                 }

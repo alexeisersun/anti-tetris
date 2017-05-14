@@ -1,9 +1,9 @@
 var canvas = document.getElementsByTagName( 'canvas' )[ 0 ];
 var scoreLabel = document.getElementById('score-text');
 var ctx = canvas.getContext( '2d' );
-var W = 300, H = 600;
-COLS = tetris.COLS;
-ROWS = tetris.ROWS;
+var W = 300, H = 500;
+COLS = tetris.cols;
+ROWS = tetris.rows;
 var BLOCK_W = W / COLS, BLOCK_H = H / ROWS;
 
 
@@ -43,7 +43,7 @@ function render() {
 }
 
 function updateScore() {
-    scoreLabel.innerHTML = 'Score:' + tetris.score;
+    scoreLabel.innerHTML = 'Score: ' + tetris.score;
 }
 
 setInterval( render, 30 );

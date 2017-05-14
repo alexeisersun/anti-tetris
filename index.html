@@ -5,14 +5,31 @@
 		<title>Anti-Tetris</title>
 		<link rel='stylesheet' href='style.css' />
 
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+		<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
 
 	</head>
 	<body>
-		<div class="container">
-			<div>
-				<canvas width='300' height='600'></canvas>
-				<div class="score">
-					<p id="score-text">Score: <span>0</span></p>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<h1>
+						Anti-Tetris
+					</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-offset-2 col-md-4">
+					<canvas width='300' height='600'></canvas>
+				</div>
+				<div class="score col-md-2">
+					<h2 id="score-text">Score: <span>0</span></h2>
 				</div>
 			</div>
 		</div>

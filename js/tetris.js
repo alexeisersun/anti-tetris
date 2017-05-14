@@ -134,33 +134,14 @@ var tetris = {
 
     endGame: function() {
         clearInterval(this.interval);
-        alert("LOST");
+        alert("Lost!");
+    },
+
+    pauseGame: function() {
+        clearInterval(this.interval);
+    },
+
+    playGame: function() {
+        this.interval( this.tick, 250 );
     }
 }
-
-tetris.newGame();
-
-/*
-    // check if any lines are filled and clear them
-    function clearLines() {
-        for ( var y = rows - 1; y >= 0; --y ) {
-            var rowFilled = true;
-            for ( var x = 0; x < cols; ++x ) {
-                if ( board[ y ][ x ] == 0 ) {
-                    rowFilled = false;
-                    break;
-                }
-            }
-            if ( rowFilled ) {
-                document.getElementById( 'clearsound' ).play();
-                for ( var yy = y; yy > 0; --yy ) {
-                    for ( var x = 0; x < cols; ++x ) {
-                        board[ yy ][ x ] = board[ yy - 1 ][ x ];
-                    }
-                }
-                ++y;
-            }
-        }
-    }
-
-    */

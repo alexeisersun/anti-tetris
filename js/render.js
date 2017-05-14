@@ -1,12 +1,14 @@
 var canvas = document.getElementsByTagName( 'canvas' )[ 0 ];
-var scoreLabel = document.getElementById('score-text');
+var scoreLabel = document.getElementById('score-value');
+
 var ctx = canvas.getContext( '2d' );
 var W = 300, H = 500;
 COLS = tetris.cols;
 ROWS = tetris.rows;
 var BLOCK_W = W / COLS, BLOCK_H = H / ROWS;
+var renderIntervalID;
 
-
+canvas.focus();
 // draw a single square at (x, y)
 function drawBlock( x, y ) {
     ctx.fillRect( BLOCK_W * x, BLOCK_H * y, BLOCK_W - 1 , BLOCK_H - 1 );
@@ -43,7 +45,5 @@ function render() {
 }
 
 function updateScore() {
-    scoreLabel.innerHTML = 'Score: ' + tetris.score;
+    scoreLabel.innerHTML = tetris.score;
 }
-
-setInterval( render, 30 );

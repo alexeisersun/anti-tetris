@@ -25,11 +25,15 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-offset-2 col-md-4">
-					<canvas width='300' height='600'></canvas>
+				<div class="col-md-offset-4 col-md-4 col-sm-4 col-xs-8">
+					<canvas width='300' height='500'></canvas>
 				</div>
-				<div class="score col-md-2">
-					<h2 id="score-text">Score: <span>0</span></h2>
+				<div class="col-md-2 col-sm-3 col-xs-4">
+					<h2 class="score">Score: <span id="score-value">0</span></h2>
+					<div class="btn-group">
+						<button id="play-button" class="btn btn-success btn-lg active" onclick="play"><span class="glyphicon glyphicon-play"></span></button>
+						<button id="stop-button" class="btn btn-success btn-lg disabled" onclick="stop"><span class="glyphicon glyphicon-repeat"></span></button>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -89,6 +89,6 @@ function repeat() {
 }
 
 
-var audio = new Audio('sound/tetris-ost.ogg');
+var audio = new Audio('sound/reverse-tetris-ost.ogg');
 audio.loop = true;
 audio.play();

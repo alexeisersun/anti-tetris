@@ -156,7 +156,6 @@ var tetris = {
         this.gameOverEvent = new CustomEvent("gameOver", { detail: "Game Over!", score: 0});
         document.dispatchEvent(tetris.gameOverEvent);
         clearInterval( this.interval )
-
     },
 
     pauseGame: function() {
